@@ -6,7 +6,7 @@ import styles from './styles/App.module.scss';
 import Hemisphere from './components/Hemisphere';
 import TorusKnot from './components/TorusKnot';
 import Sphere from './components/Sphere';
-import Torus from './components/Torus';
+import TorusGroup from './components/TorusGroup/TorusGroup';
 
 function App() {
   return (
@@ -52,7 +52,7 @@ function App() {
           /> */}
           {/* <TorusKnot /> */}
           {/* <Sphere position={[0, 0, 0]} size={1.4} color={'pink'} /> */}
-          <Torus />
+          <TorusGroup />
 
           <OrbitControls enableDamping enableZoom={true} />
           <CameraShake
