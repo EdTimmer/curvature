@@ -13,7 +13,7 @@ const Astronaut = forwardRef<any, AstronautProps>(({ children, rotationSpeed = 0
   const { nodes, materials } = useGLTF('../../models/Astronaut-transformed.glb')
   // Create local ref if no ref is provided
   const localRef = useRef<THREE.Mesh>(null);
-  const meshRef = ref || localRef;
+  const meshRef = (ref as React.RefObject<THREE.Mesh>) || localRef;
 
   useLayoutEffect(() => {
     Object.values(materials).forEach((material) => {
@@ -22,10 +22,10 @@ const Astronaut = forwardRef<any, AstronautProps>(({ children, rotationSpeed = 0
   }, [])
 
   useFrame(() => {
-    if (localRef.current) {
-      localRef.current.rotation.y += rotationSpeed;
-      localRef.current.rotation.x += rotationSpeed;
-      localRef.current.rotation.z += rotationSpeed;
+    if (meshRef.current) {
+      meshRef.current.rotation.y += rotationSpeed;
+      meshRef.current.rotation.x += rotationSpeed;
+      meshRef.current.rotation.z += rotationSpeed;
     }
   });
   

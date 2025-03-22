@@ -5,54 +5,111 @@ import { OrbitControls, PerspectiveCamera, CameraShake } from '@react-three/drei
 import styles from './styles/App.module.scss';
 import Hemisphere from './components/Hemisphere';
 import TorusKnot from './components/TorusKnot';
-import Sphere from './components/Sphere';
+import { CircularProgress, IconButton } from '@mui/material';
+import VolumeUpIcon from '@mui/icons-material/VolumeUp';
+import VolumeOffIcon from '@mui/icons-material/VolumeOff';
+
 import TorusGroup from './components/TorusGroup/TorusGroup';
+import { Suspense, useEffect, useRef, useState } from 'react';
 
 function App() {
+  const [audioInitialized, setAudioInitialized] = useState(false);
+  const [audioEnabled, setAudioEnabled] = useState(false);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [audioLoading, setAudioLoading] = useState(false);
+  const clickTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Pre-initialize audio context on component mount
+  useEffect(() => {
+    const initAudioContext = () => {
+      // Create a silent audio context to initialize browser audio system
+      try {
+        const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+        const silentBuffer = audioContext.createBuffer(1, 1, 22050);
+        const source = audioContext.createBufferSource();
+        source.buffer = silentBuffer;
+        source.connect(audioContext.destination);
+        source.start(0);
+        source.stop(0.001); // Stop it immediately
+        
+        // Mark as initialized
+        setAudioInitialized(true);
+      } catch (e) {
+        console.log('Audio pre-initialization failed:', e);
+      }
+    };
+    
+    // Initialize after a delay to not block initial render
+    const timer = setTimeout(initAudioContext, 1000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const handleAudioClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+    
+    // Prevent multiple clicks during transition
+    if (isTransitioning) return;
+    
+    setIsTransitioning(true);
+
+    // For first click, show loading indicator longer
+    if (!audioEnabled) {
+      setAudioLoading(true);
+    }
+    
+    // Clear any existing timeout
+    if (clickTimeoutRef.current) {
+      clearTimeout(clickTimeoutRef.current);
+    }
+    
+    // Handle toggle with appropriate delays for first click vs subsequent clicks
+    if (!audioEnabled) {
+      // First enable - longer delay to initialize audio
+      clickTimeoutRef.current = setTimeout(() => {
+        setAudioEnabled(true);
+        // Keep transition state for a bit more to mask any flicker
+        setTimeout(() => {
+          setIsTransitioning(false);
+          setAudioLoading(false);
+        }, 150);
+      }, 150);
+    } else {
+      // Subsequent clicks - shorter delay
+      clickTimeoutRef.current = setTimeout(() => {
+        setAudioEnabled(false);
+        setIsTransitioning(false);
+      }, 100);
+    }
+  };
+
   return (
     <div className={styles.appWrapper}>
       <div className="plane">
-        <Canvas gl={{ antialias: true }}>
+        <Canvas
+          gl={{ antialias: true, powerPreference: 'high-performance', alpha: false }}
+          style={{ opacity: isTransitioning ? 0.98 : 1,  transition: 'opacity 0.15s ease' }}
+          // frameloop={audioLoading ? 'demand' : 'always'}
+        >
+          <Suspense fallback={null}>
+            <TorusGroup 
+              audioInitialized={audioInitialized}
+              audioEnabled={audioEnabled} 
+            />
+          </Suspense>
           <fog attach="fog" args={['#f3efef', 0.5, 28]} />
           {/* <PerspectiveCamera makeDefault fov={20} position={[0, 0, 20]} /> */}
           <PerspectiveCamera
             makeDefault
             fov={20}
             position={[0, 0, 1]}
-            // ref={(camera) => camera?.lookAt(0, 0, 0)}
           />
           <ambientLight intensity={0.5} />
           <directionalLight position={[10, 0, 10]} />
           <directionalLight position={[0, 10, 0]} />
           <directionalLight position={[0, 0, 1]} />
-          {/* <PlaneComponent /> */}
-          {/* <Hemisphere
-            position={[0, 0.1, 0]}
-            size={2}
-            color={'pink'}
-            rotation={[0, 0, 0]}
-            rotationSpeed={0}
-            rotationClockwise={true}
-          /> */}
-          {/* <Hemisphere
-            position={[0, 0, -0.3]}
-            size={1}
-            color={'lightblue'}
-            rotation={[Math.PI / 2, 0, Math.PI]}
-            rotationSpeed={0.01}
-            rotationClockwise={false}
-          /> */}
-          {/* <Hemisphere
-            position={[0, 0, 0]}
-            size={0.6}
-            color={'yellow'}
-            rotation={[Math.PI / 2, 0, 1]}
-            rotationSpeed={0.03}
-            rotationClockwise={true}
-          /> */}
-          {/* <TorusKnot /> */}
-          {/* <Sphere position={[0, 0, 0]} size={1.4} color={'pink'} /> */}
-          <TorusGroup />
+
+          <TorusGroup audioInitialized={audioInitialized} audioEnabled={audioEnabled} />
 
           <OrbitControls enableDamping enableZoom={true} />
           <CameraShake
@@ -67,6 +124,53 @@ function App() {
           />
         </Canvas>
       </div>
+      <div className={styles.controls}>
+      <IconButton 
+          aria-label="volume"
+          type="button"
+          disabled={isTransitioning || !audioInitialized}
+          onClick={handleAudioClick}
+          sx={{ 
+            color: 'white', 
+            position: 'absolute', 
+            top: '20px', 
+            right: '40px',
+            backgroundColor: 'rgba(0,0,0,0.2)',
+            opacity: isTransitioning ? 0.7 : 1,
+            transition: 'all 0.3s ease',
+            '&:hover': {
+              backgroundColor: 'rgba(0,0,0,0.4)',
+            },
+            '&:focus': {
+              outline: 'none',
+            },
+            '&:focus-visible': {
+              outline: 'none',
+            },
+          }}
+        >
+          {isTransitioning ? (
+            <CircularProgress size={20} color="inherit" />
+          ) : (
+            audioEnabled ? <VolumeUpIcon /> : <VolumeOffIcon />
+          )}
+        </IconButton>
+      </div>
+
+      {audioLoading && (
+        <div 
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: 'rgba(0,0,0,0.01)', // Nearly invisible
+            zIndex: 10,
+            pointerEvents: 'none'
+          }}
+        />
+      )}
       
     </div>
   )
