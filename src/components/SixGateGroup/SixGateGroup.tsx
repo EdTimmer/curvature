@@ -16,7 +16,7 @@ const SixGateGroup = forwardRef<THREE.Group, Props>(({ position, rotation, scale
 
   useFrame(() => {
     if (groupRef.current) {
-      groupRef.current.rotation.z -= 0.02;
+      groupRef.current.rotation.z -= 0.015;
     }
   });
 

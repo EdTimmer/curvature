@@ -11,6 +11,7 @@ import VolumeOffIcon from '@mui/icons-material/VolumeOff';
 
 import TorusGroup from './components/TorusGroup/TorusGroup';
 import { Suspense, useEffect, useRef, useState } from 'react';
+import { SwapHorizontalCircle, SwapHorizontalCircleOutlined, SwapHorizOutlined } from '@mui/icons-material';
 
 function App() {
   const [audioInitialized, setAudioInitialized] = useState(false);
@@ -18,6 +19,8 @@ function App() {
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [audioLoading, setAudioLoading] = useState(false);
   const clickTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const wasEnabledBeforeTabChange = useRef<boolean>(false);
+  const [isMovingForward, setIsMovingForward] = useState(true);
 
   // Pre-initialize audio context on component mount
   useEffect(() => {
@@ -43,6 +46,30 @@ function App() {
     const timer = setTimeout(initAudioContext, 1000);
     return () => clearTimeout(timer);
   }, []);
+
+  // Handle tab visibility changes
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        // Tab is now hidden
+        wasEnabledBeforeTabChange.current = audioEnabled;
+        if (audioEnabled) {
+          setAudioEnabled(false);
+        }
+      } else {
+        // Tab is visible again - restore previous state if it was enabled
+        if (wasEnabledBeforeTabChange.current) {
+          setAudioEnabled(true);
+        }
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, [audioEnabled]);
 
   const handleAudioClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
@@ -94,7 +121,8 @@ function App() {
           <Suspense fallback={null}>
             <TorusGroup 
               audioInitialized={audioInitialized}
-              audioEnabled={audioEnabled} 
+              audioEnabled={audioEnabled}
+              isMovingForward={isMovingForward}
             />
           </Suspense>
           <fog attach="fog" args={['#f3efef', 0.5, 28]} />
@@ -109,7 +137,7 @@ function App() {
           <directionalLight position={[0, 10, 0]} />
           <directionalLight position={[0, 0, 1]} />
 
-          <TorusGroup audioInitialized={audioInitialized} audioEnabled={audioEnabled} />
+          <TorusGroup audioInitialized={audioInitialized} audioEnabled={audioEnabled} isMovingForward={isMovingForward} />
 
           <OrbitControls enableDamping enableZoom={true} />
           <CameraShake
@@ -125,11 +153,42 @@ function App() {
         </Canvas>
       </div>
       <div className={styles.controls}>
-      <IconButton 
+        <IconButton 
           aria-label="volume"
           type="button"
           disabled={isTransitioning || !audioInitialized}
           onClick={handleAudioClick}
+          sx={{ 
+            color: 'white', 
+            position: 'absolute', 
+            top: '20px', 
+            right: '90px',
+            backgroundColor: 'rgba(0,0,0,0.2)',
+            opacity: isTransitioning ? 0.7 : 1,
+            transition: 'all 0.3s ease',
+            '&:hover': {
+              backgroundColor: 'rgba(0,0,0,0.4)',
+            },
+            '&:focus': {
+              outline: 'none',
+            },
+            '&:focus-visible': {
+              outline: 'none',
+            },
+          }}
+        >
+          {isTransitioning ? (
+            <CircularProgress size={20} color="inherit" />
+          ) : (
+            audioEnabled ? <VolumeUpIcon /> : <VolumeOffIcon />
+          )}
+        </IconButton>
+
+        <IconButton 
+          aria-label="volume"
+          type="button"
+          disabled={isTransitioning || !audioInitialized}
+          onClick={() => setIsMovingForward(!isMovingForward)}
           sx={{ 
             color: 'white', 
             position: 'absolute', 
@@ -152,10 +211,11 @@ function App() {
           {isTransitioning ? (
             <CircularProgress size={20} color="inherit" />
           ) : (
-            audioEnabled ? <VolumeUpIcon /> : <VolumeOffIcon />
+            <SwapHorizOutlined />
           )}
         </IconButton>
       </div>
+      
 
       {audioLoading && (
         <div 

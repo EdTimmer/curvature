@@ -16,56 +16,58 @@ import LongGateGroup from '../LongGateGroup/LongGateGroup';
 import LargeGateGroup from '../LargeGateGroup/LargeGateGroup';
 import SixGateGroup from '../SixGateGroup/SixGateGroup';
 import LongGateTwoGroup from '../LongGateTwoGroup/LongGateTwoGroup';
+import AudioElement from '../AudioElement';
 
-const LazyPositionalAudio = React.lazy(() => 
-  new Promise(resolve => {
-    // Delay the import to give the browser time to settle
-    setTimeout(() => {
-      // @ts-ignore - this is a workaround for dynamic imports
-      resolve({ default: PositionalAudio });
-    }, 50);
-  })
-);
+// const LazyPositionalAudio = React.lazy(() => 
+//   new Promise(resolve => {
+//     // Delay the import to give the browser time to settle
+//     setTimeout(() => {
+//       // @ts-ignore - this is a workaround for dynamic imports
+//       resolve({ default: PositionalAudio });
+//     }, 50);
+//   })
+// );
 
-interface AudioElementProps {
-  audioEnabled: boolean;
-  audioInitialized: boolean;
-  id: string;
-  url: string;
-  setAudioRef: (id: string) => (ref: THREE.PositionalAudio | null) => void;
-}
+// interface AudioElementProps {
+//   audioEnabled: boolean;
+//   audioInitialized: boolean;
+//   id: string;
+//   url: string;
+//   setAudioRef: (id: string) => (ref: THREE.PositionalAudio | null) => void;
+// }
 
-const AudioElement = ({ audioEnabled, audioInitialized, id, url, setAudioRef }: AudioElementProps) => {
-  const [isLoaded, setIsLoaded] = useState(false);
+// const AudioElement = ({ audioEnabled, audioInitialized, id, url, setAudioRef }: AudioElementProps) => {
+//   const [isLoaded, setIsLoaded] = useState(false);
   
-  useEffect(() => {
-    if (audioEnabled && audioInitialized && !isLoaded) {
-      // Slight delay to stagger loading
-      const timeout = setTimeout(() => {
-        setIsLoaded(true);
-      }, parseInt(id.replace(/\D/g, '')) * 10); // Stagger loading based on ID
-      return () => clearTimeout(timeout);
-    }
-  }, [audioEnabled, audioInitialized, isLoaded, id]);
+//   useEffect(() => {
+//     if (audioEnabled && audioInitialized && !isLoaded) {
+//       // Slight delay to stagger loading
+//       const timeout = setTimeout(() => {
+//         setIsLoaded(true);
+//       }, parseInt(id.replace(/\D/g, '')) * 10); // Stagger loading based on ID
+//       return () => clearTimeout(timeout);
+//     }
+//   }, [audioEnabled, audioInitialized, isLoaded, id]);
 
-  if (!audioEnabled || !audioInitialized || !isLoaded) return null;
+//   if (!audioEnabled || !audioInitialized || !isLoaded) return null;
   
-  return (
-    <React.Suspense fallback={null}>
-      <LazyPositionalAudio 
-        ref={setAudioRef(id)} 
-        url={url} 
-        distance={1} 
-      />
-    </React.Suspense>
-  );
-}
+//   return (
+//     <React.Suspense fallback={null}>
+//       <LazyPositionalAudio 
+//         ref={setAudioRef(id)} 
+//         url={url} 
+//         distance={1} 
+//       />
+//     </React.Suspense>
+//   );
+// }
 
 interface Props {
   audioInitialized: boolean;
   audioEnabled: boolean;
+  isMovingForward: boolean;
 }
-const TorusGroup = ({ audioInitialized, audioEnabled }: Props) => {
+const TorusGroup = ({ audioInitialized, audioEnabled, isMovingForward }: Props) => {
   const [audioReady, setAudioReady] = useState(false);
   
   // Add this effect to handle staged audio initialization
@@ -142,8 +144,11 @@ const TorusGroup = ({ audioInitialized, audioEnabled }: Props) => {
 
   useFrame((state, delta) => {
     if (!torusGroupRef.current) return;
-    torusGroupRef.current.rotation.y += delta * 0.095;
-
+    if (isMovingForward) {
+      torusGroupRef.current.rotation.y += delta * 0.095;
+    } else {
+      torusGroupRef.current.rotation.y -= delta * 0.095;
+    }
   });
 
   useFrame((state, delta) => {

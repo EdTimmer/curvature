@@ -5,12 +5,6 @@ import cylinderFragmentShader from '../shaders/artifactTwo/fragment_two.glsl?raw
 import cylinderVertexShader from '../shaders/artifactTwo/vertex_two.glsl?raw'
 import { forwardRef, useRef } from 'react';
 
-// interface Props {
-//   position: [number, number, number];
-//   rotation: [number, number, number];
-//   children?: React.ReactNode;
-// }
-
 interface ArtifactMaterialType extends THREE.ShaderMaterial {
   uNoiseSwirlSteps: number,
   uNoiseSwirlValue: number,
