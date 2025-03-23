@@ -1,5 +1,5 @@
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls, PerspectiveCamera, CameraShake } from '@react-three/drei';
+import { PerspectiveCamera, CameraShake } from '@react-three/drei';
 import styles from './styles/App.module.scss';
 import { CircularProgress, IconButton } from '@mui/material';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
@@ -154,7 +154,7 @@ function App() {
             color: 'white', 
             position: 'absolute', 
             top: '20px', 
-            right: '90px',
+            right: '80px',
             backgroundColor: 'rgba(0,0,0,0.2)',
             opacity: isTransitioning ? 0.7 : 1,
             transition: 'all 0.3s ease',
@@ -182,7 +182,8 @@ function App() {
           onClick={() => setIsMovingForward(!isMovingForward)}
           sx={{ 
             color: 'white', 
-            position: 'absolute', 
+            position: 'absolute',
+            rotate: '90deg',
             top: '20px', 
             right: '40px',
             backgroundColor: 'rgba(0,0,0,0.2)',

@@ -16,6 +16,7 @@ interface Props {
 }
 const TorusGroup = ({ audioInitialized, audioEnabled, isMovingForward }: Props) => {
   const [audioReady, setAudioReady] = useState(false);
+  const [count, setCount] = useState(0);
   
   // Add this effect to handle staged audio initialization
   useEffect(() => {
@@ -91,7 +92,16 @@ const TorusGroup = ({ audioInitialized, audioEnabled, isMovingForward }: Props) 
 
   useFrame((_, delta) => {
     if (!torusGroupRef.current) return;
-    if (isMovingForward) {
+
+    // Increment coount for full loop
+    if (count === 0 && Math.abs(torusGroupRef.current.rotation.y) >= 2 * Math.PI + 0.5) {
+      setCount(count + 1);
+    }
+    if (count === 1 && Math.abs(torusGroupRef.current.rotation.y) >= 4 * Math.PI + 0.5) {
+      setCount(count + 1);
+    }
+    // Set direction of rotation around Y axis
+    if (isMovingForward) { 
       torusGroupRef.current.rotation.y += delta * 0.095;
     } else {
       torusGroupRef.current.rotation.y -= delta * 0.095;
@@ -122,6 +132,7 @@ const TorusGroup = ({ audioInitialized, audioEnabled, isMovingForward }: Props) 
         
         // Manage playback based on distance
         if (distance > distanceForSound && audio.isPlaying) {
+          console.log('distance :>> ', distance);
           audio.stop();
         } else if (distance <= distanceForSound && !audio.isPlaying && audioEnabled) {
           audio.play();
@@ -138,6 +149,7 @@ const TorusGroup = ({ audioInitialized, audioEnabled, isMovingForward }: Props) 
   };
   
   console.log('audioEnabled :>> ', audioEnabled);
+  console.log('count :>> ', count);
   return (
     <group ref={groupRef} position={[0, 0, 0]}>
       <group ref={torusGroupRef} position={[28, 0, 0]}>
@@ -156,7 +168,7 @@ const TorusGroup = ({ audioInitialized, audioEnabled, isMovingForward }: Props) 
         </mesh>
 
         {/* West */}
-        <SixGateGroup ref={gateGroupTwoRef} position={[-28, 0, 0]} rotation={[0, 0, 0]} scale={1.2}>
+        <SixGateGroup ref={gateGroupTwoRef} position={[-28, 0, 0]} rotation={[0, 0, 0]} scale={1.2} count={count}>
           <AudioElement 
             audioEnabled={audioEnabled && audioReady}
             audioInitialized={audioInitialized}
@@ -167,7 +179,7 @@ const TorusGroup = ({ audioInitialized, audioEnabled, isMovingForward }: Props) 
         </SixGateGroup>
 
         {/* North */}
-        <ThreeSpheresGateGroup ref={gateGroupFourRef} position={[0, 0, -28]} rotation={[0, -Math.PI / 2, 0]} scale={1.2}>
+        <ThreeSpheresGateGroup ref={gateGroupFourRef} position={[0, 0, -28]} rotation={[0, -Math.PI / 2, 0]} isMovingForward={isMovingForward} scale={1.2}>
           <AudioElement 
             audioEnabled={audioEnabled && audioReady}
             audioInitialized={audioInitialized}
@@ -177,8 +189,28 @@ const TorusGroup = ({ audioInitialized, audioEnabled, isMovingForward }: Props) 
           />
         </ThreeSpheresGateGroup>
 
+        {count >= 1 && <ThreeSpheresGateGroup ref={gateGroupFourRef} position={[-1.5, 0, -28]} rotation={[0, -Math.PI / 2, 0]} isMovingForward={isMovingForward} scale={1.2}>
+          <AudioElement 
+            audioEnabled={audioEnabled && audioReady}
+            audioInitialized={audioInitialized}
+            id="artifact4" 
+            url="../audio/ambient-1.mp3" 
+            setAudioRef={setAudioRef}
+          />
+        </ThreeSpheresGateGroup>}
+
+        {count >= 2 && <ThreeSpheresGateGroup ref={gateGroupFourRef} position={[1.5, 0, -28]} rotation={[0, -Math.PI / 2, 0]} isMovingForward={isMovingForward} scale={1.2}>
+          <AudioElement 
+            audioEnabled={audioEnabled && audioReady}
+            audioInitialized={audioInitialized}
+            id="artifact4" 
+            url="../audio/ambient-1.mp3" 
+            setAudioRef={setAudioRef}
+          />
+        </ThreeSpheresGateGroup>}
+
         {/* East */}
-        <OctahedronsGateGroup ref={gateGroupOneRef} position={[28, 0, 0]} rotation={[0, Math.PI, 0]} scale={1.2}>
+        <OctahedronsGateGroup ref={gateGroupOneRef} position={[28, 0, 0]} rotation={[0, Math.PI, 0]} isMovingForward={isMovingForward} scale={1.2}>
           <AudioElement 
             audioEnabled={audioEnabled && audioReady}
             audioInitialized={audioInitialized}
@@ -188,8 +220,28 @@ const TorusGroup = ({ audioInitialized, audioEnabled, isMovingForward }: Props) 
           />
         </OctahedronsGateGroup>
 
+        {count >= 1 && <OctahedronsGateGroup ref={gateGroupOneRef} position={[28, 0, -1.5]} rotation={[0, Math.PI, 0]} isMovingForward={isMovingForward} scale={1.2}>
+          <AudioElement 
+            audioEnabled={audioEnabled && audioReady}
+            audioInitialized={audioInitialized}
+            id="artifact1" 
+            url="../audio/ambient-1.mp3" 
+            setAudioRef={setAudioRef}
+          />
+        </OctahedronsGateGroup>}
+
+        {count >= 2 && <OctahedronsGateGroup ref={gateGroupOneRef} position={[28, 0, 1.5]} rotation={[0, Math.PI, 0]} isMovingForward={isMovingForward} scale={1.2}>
+          <AudioElement 
+            audioEnabled={audioEnabled && audioReady}
+            audioInitialized={audioInitialized}
+            id="artifact1" 
+            url="../audio/ambient-1.mp3" 
+            setAudioRef={setAudioRef}
+          />
+        </OctahedronsGateGroup>}
+
         {/* South */}
-        <ThreeRingsGroup ref={gateGroupThreeRef} position={[0, 0, 28]} rotation={[0, Math.PI / 2, 0]} scale={1.2}>
+        <ThreeRingsGroup ref={gateGroupThreeRef} position={[0, 0, 28]} rotation={[0, Math.PI / 2, 0]} scale={1.2} count={count}>
           <AudioElement 
             audioEnabled={audioEnabled && audioReady}
             audioInitialized={audioInitialized}

@@ -49,10 +49,11 @@ declare global {
 
 interface Props {
   position: [number, number, number];
+  isMovingForward: boolean;
   children?: React.ReactNode;
 }
 
-const ArtifactOctahedron = forwardRef<any, Props>(({ position, children }, ref) => {
+const ArtifactOctahedron = forwardRef<any, Props>(({ position, isMovingForward, children }, ref) => {
   const localRef = useRef<THREE.Mesh>(null);
   const meshRef = (ref as React.RefObject<THREE.Mesh>) || localRef;
   const materialRef = useRef<ArtifactMaterialType>(null!)
@@ -62,7 +63,11 @@ const ArtifactOctahedron = forwardRef<any, Props>(({ position, children }, ref) 
       materialRef.current.uniforms.u_Time.value = clock.getElapsedTime()
     }
     if (meshRef.current) {
-      meshRef.current.rotation.x -= 0.04;
+      if (isMovingForward) {
+        meshRef.current.rotation.x -= 0.04;
+      } else {
+        meshRef.current.rotation.x += 0.04;
+      }
     }
   })
 
