@@ -21,3 +21,15 @@ export const getEquilateralTriangleVertices = (radius: number) => {
   });
   return vertices;
 }
+
+export const getSquareVertices = (radius: number) => {
+  const vertices = Array(4).fill(0).map((_, i) => {
+    const angle = (i * Math.PI / 2) - Math.PI / 2; // Start from bottom (270°)
+    return [
+      radius * Math.cos(angle),
+      radius * Math.sin(angle),
+      0
+    ] as [number, number, number];
+  });
+  return vertices;
+}

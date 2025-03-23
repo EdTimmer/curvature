@@ -1,66 +1,13 @@
-import React from 'react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useFrame, useLoader, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
-import { useTexture, Float, MarchingCubes, MarchingCube, MarchingPlane, PositionalAudio } from '@react-three/drei';
-import { Mesh, TextureLoader } from 'three';
-import ShaderCylinder from '../GateGroup/ShaderCylinder';
+import { TextureLoader } from 'three';
 import Astronaut from '../Astronaut';
-import Orb from '../Orb';
-import GateGroup from '../GateGroup/GateGroup';
-import ArtifactOne from '../ArtifactOne';
-import ArtifactTwo from '../ArtifactTwo';
-import ArtifactThree from '../ArtifactThree';
-import ArtifactFour from '../ArtifactFour';
-import LongGateGroup from '../LongGateGroup/LongGateGroup';
-import LargeGateGroup from '../LargeGateGroup/LargeGateGroup';
+import OctahedronsGateGroup from '../OctahedronsGateGroup/OctahedronsGateGroup';
+import ThreeRingsGroup from '../ThreeRingsGroup/ThreeRingsGroup';
 import SixGateGroup from '../SixGateGroup/SixGateGroup';
-import LongGateTwoGroup from '../LongGateTwoGroup/LongGateTwoGroup';
+import ThreeSpheresGateGroup from '../ThreeSpheresGateGroup/ThreeSpheresGateGroup';
 import AudioElement from '../AudioElement';
-
-// const LazyPositionalAudio = React.lazy(() => 
-//   new Promise(resolve => {
-//     // Delay the import to give the browser time to settle
-//     setTimeout(() => {
-//       // @ts-ignore - this is a workaround for dynamic imports
-//       resolve({ default: PositionalAudio });
-//     }, 50);
-//   })
-// );
-
-// interface AudioElementProps {
-//   audioEnabled: boolean;
-//   audioInitialized: boolean;
-//   id: string;
-//   url: string;
-//   setAudioRef: (id: string) => (ref: THREE.PositionalAudio | null) => void;
-// }
-
-// const AudioElement = ({ audioEnabled, audioInitialized, id, url, setAudioRef }: AudioElementProps) => {
-//   const [isLoaded, setIsLoaded] = useState(false);
-  
-//   useEffect(() => {
-//     if (audioEnabled && audioInitialized && !isLoaded) {
-//       // Slight delay to stagger loading
-//       const timeout = setTimeout(() => {
-//         setIsLoaded(true);
-//       }, parseInt(id.replace(/\D/g, '')) * 10); // Stagger loading based on ID
-//       return () => clearTimeout(timeout);
-//     }
-//   }, [audioEnabled, audioInitialized, isLoaded, id]);
-
-//   if (!audioEnabled || !audioInitialized || !isLoaded) return null;
-  
-//   return (
-//     <React.Suspense fallback={null}>
-//       <LazyPositionalAudio 
-//         ref={setAudioRef(id)} 
-//         url={url} 
-//         distance={1} 
-//       />
-//     </React.Suspense>
-//   );
-// }
 
 interface Props {
   audioInitialized: boolean;
@@ -142,7 +89,7 @@ const TorusGroup = ({ audioInitialized, audioEnabled, isMovingForward }: Props) 
     }
   }, [audioEnabled]);
 
-  useFrame((state, delta) => {
+  useFrame((_, delta) => {
     if (!torusGroupRef.current) return;
     if (isMovingForward) {
       torusGroupRef.current.rotation.y += delta * 0.095;
@@ -151,7 +98,7 @@ const TorusGroup = ({ audioInitialized, audioEnabled, isMovingForward }: Props) 
     }
   });
 
-  useFrame((state, delta) => {
+  useFrame((_, delta) => {
     if (!groupRef.current) return;
     groupRef.current.rotation.z += delta * 0.055;
   });
@@ -220,29 +167,7 @@ const TorusGroup = ({ audioInitialized, audioEnabled, isMovingForward }: Props) 
         </SixGateGroup>
 
         {/* North */}
-        <LargeGateGroup ref={gateGroupThreeRef} position={[0, 0, -28]} rotation={[0, -Math.PI / 2, 0]} scale={1.2}>
-          <AudioElement 
-            audioEnabled={audioEnabled && audioReady}
-            audioInitialized={audioInitialized}
-            id="artifact3" 
-            url="../audio/ambient-1.mp3" 
-            setAudioRef={setAudioRef}
-          />
-        </LargeGateGroup>
-
-        {/* East */}
-        <LongGateGroup ref={gateGroupOneRef} position={[28, 0, 0]} rotation={[0, Math.PI, 0]} scale={1.2}>
-          <AudioElement 
-            audioEnabled={audioEnabled && audioReady}
-            audioInitialized={audioInitialized}
-            id="artifact1" 
-            url="../audio/ambient-1.mp3" 
-            setAudioRef={setAudioRef}
-          />
-        </LongGateGroup>
-
-        {/* South */}
-        <LongGateTwoGroup ref={gateGroupFourRef} position={[0, 0, 28]} rotation={[0, Math.PI / 2, 0]} scale={1.2}>
+        <ThreeSpheresGateGroup ref={gateGroupFourRef} position={[0, 0, -28]} rotation={[0, -Math.PI / 2, 0]} scale={1.2}>
           <AudioElement 
             audioEnabled={audioEnabled && audioReady}
             audioInitialized={audioInitialized}
@@ -250,7 +175,29 @@ const TorusGroup = ({ audioInitialized, audioEnabled, isMovingForward }: Props) 
             url="../audio/ambient-1.mp3" 
             setAudioRef={setAudioRef}
           />
-        </LongGateTwoGroup>
+        </ThreeSpheresGateGroup>
+
+        {/* East */}
+        <OctahedronsGateGroup ref={gateGroupOneRef} position={[28, 0, 0]} rotation={[0, Math.PI, 0]} scale={1.2}>
+          <AudioElement 
+            audioEnabled={audioEnabled && audioReady}
+            audioInitialized={audioInitialized}
+            id="artifact1" 
+            url="../audio/ambient-1.mp3" 
+            setAudioRef={setAudioRef}
+          />
+        </OctahedronsGateGroup>
+
+        {/* South */}
+        <ThreeRingsGroup ref={gateGroupThreeRef} position={[0, 0, 28]} rotation={[0, Math.PI / 2, 0]} scale={1.2}>
+          <AudioElement 
+            audioEnabled={audioEnabled && audioReady}
+            audioInitialized={audioInitialized}
+            id="artifact3" 
+            url="../audio/ambient-1.mp3" 
+            setAudioRef={setAudioRef}
+          />
+        </ThreeRingsGroup>
 
         <Astronaut ref={astronautOneRef} scale={0.035} position={[-19.9, 0, -19.9]} rotation={[0, 0, Math.PI / 2]}>
           <object3D />

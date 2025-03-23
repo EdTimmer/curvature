@@ -5,12 +5,6 @@ import cylinderFragmentShader from '../shaders/artifactTwo/fragment_two.glsl?raw
 import cylinderVertexShader from '../shaders/artifactTwo/vertex_two.glsl?raw'
 import { forwardRef, useRef } from 'react';
 
-// interface Props {
-//   position: [number, number, number];
-//   rotation: [number, number, number];
-//   children?: React.ReactNode;
-// }
-
 interface ArtifactMaterialType extends THREE.ShaderMaterial {
   uNoiseSwirlSteps: number,
   uNoiseSwirlValue: number,
@@ -55,30 +49,30 @@ declare global {
 
 interface Props {
   position: [number, number, number];
+  scale: number;
   rotation?: [number, number, number];
   children?: React.ReactNode;
 }
 
-const ArtifactBox = forwardRef<any, Props>(({ position, rotation = [0, 0, 0], children }, ref) => {
+const ArtifactSmallSphere = forwardRef<any, Props>(({ position, rotation = [0, 0, 0], scale, children }, ref) => {
   const localRef = useRef<THREE.Mesh>(null);
   const meshRef = (ref as React.RefObject<THREE.Mesh>) || localRef;
   const materialRef = useRef<ArtifactMaterialType>(null!)
-  // const meshRef = useRef<THREE.Mesh>(null)
 
   useFrame(({ clock }) => {
     if (materialRef.current) {
       materialRef.current.uniforms.u_Time.value = clock.getElapsedTime()
     }
     if (meshRef.current) {
-      // meshRef.current.rotation.y += 0.02;
-      meshRef.current.rotation.x -= 0.06;
-      // meshRef.current.rotation.z += 0.02;
+      meshRef.current.rotation.y += 0.02;
+      meshRef.current.rotation.x += 0.02;
+      meshRef.current.rotation.z += 0.02;
     }
   })
 
   return (
-    <mesh ref={meshRef} position={position} rotation={[0, 0, 0]} scale={1}>
-      <sphereGeometry args={[0.1, 32, 32]} />
+    <mesh ref={meshRef} position={position} rotation={rotation} scale={scale}>
+      <sphereGeometry args={[0.03, 32, 32]} />
       <artifactMaterial
         ref={materialRef}
         attach="material"
@@ -88,4 +82,4 @@ const ArtifactBox = forwardRef<any, Props>(({ position, rotation = [0, 0, 0], ch
   );
 });
 
-export default ArtifactBox;
+export default ArtifactSmallSphere;

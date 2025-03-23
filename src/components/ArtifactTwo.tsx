@@ -78,8 +78,6 @@ const ArtifactTwo = forwardRef<any, Props>(({ position, rotation = [0, 0, 0], ch
 
   return (
     <mesh ref={meshRef} position={position} rotation={rotation} scale={0.8}>
-      {/* <torusKnotGeometry args={[0.2, 0.02, 236, 36, 5, 4]} /> */}
-      {/* <sphereGeometry args={[0.2, 32, 32]} /> */}
       <boxGeometry args={[0.05, 0.05, 0.05]} />
       <artifactMaterialTwo
         ref={materialRef}

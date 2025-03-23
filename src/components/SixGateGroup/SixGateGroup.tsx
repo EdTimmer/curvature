@@ -1,8 +1,8 @@
 import { forwardRef, useRef } from "react";
 import * as THREE from 'three';
 import { useFrame } from "@react-three/fiber";
-import ArtifactFour from "../ArtifactFour";
-import { getHexagonVertices } from "../../utilities/VerticesCalculator";
+import ArtifactSmallSphere from "../ArtifactSmallSphere";
+import { getHexagonVertices } from "../../utilities/verticesCalculator";
 interface Props {
   position: [number, number, number];
   rotation: [number, number, number];
@@ -24,12 +24,12 @@ const SixGateGroup = forwardRef<THREE.Group, Props>(({ position, rotation, scale
 
   return (
     <group ref={groupRef} position={position} rotation={rotation} scale={scale}>
-      <ArtifactFour position={hexPositions[0]} rotation={[0, 0, 0]} scale={1.4} />
-      <ArtifactFour position={hexPositions[1]} rotation={[0, 0, Math.PI/3]} scale={1.4} />
-      <ArtifactFour position={hexPositions[2]} rotation={[0, 0, 2*Math.PI/3]} scale={1.4} />
-      <ArtifactFour position={hexPositions[3]} rotation={[0, 0, Math.PI]} scale={1.4} />
-      <ArtifactFour position={hexPositions[4]} rotation={[0, 0, 4*Math.PI/3]} scale={1.4} />
-      <ArtifactFour position={hexPositions[5]} rotation={[0, 0, 5*Math.PI/3]} scale={1.4} />
+      <ArtifactSmallSphere position={hexPositions[0]} rotation={[0, 0, 0]} scale={1.4} />
+      <ArtifactSmallSphere position={hexPositions[1]} rotation={[0, 0, Math.PI/3]} scale={1.4} />
+      <ArtifactSmallSphere position={hexPositions[2]} rotation={[0, 0, 2*Math.PI/3]} scale={1.4} />
+      <ArtifactSmallSphere position={hexPositions[3]} rotation={[0, 0, Math.PI]} scale={1.4} />
+      <ArtifactSmallSphere position={hexPositions[4]} rotation={[0, 0, 4*Math.PI/3]} scale={1.4} />
+      <ArtifactSmallSphere position={hexPositions[5]} rotation={[0, 0, 5*Math.PI/3]} scale={1.4} />
       {children}
     </group>
   )

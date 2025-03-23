@@ -5,12 +5,6 @@ import cylinderFragmentShader from '../shaders/artifactTwo/fragment_two.glsl?raw
 import cylinderVertexShader from '../shaders/artifactTwo/vertex_two.glsl?raw'
 import { forwardRef, useRef } from 'react';
 
-// interface Props {
-//   position: [number, number, number];
-//   rotation: [number, number, number];
-//   children?: React.ReactNode;
-// }
-
 interface ArtifactMaterialType extends THREE.ShaderMaterial {
   uNoiseSwirlSteps: number,
   uNoiseSwirlValue: number,
@@ -55,12 +49,12 @@ declare global {
 
 interface Props {
   position: [number, number, number];
-  scale: number;
+  scale?: number;
   rotation?: [number, number, number];
   children?: React.ReactNode;
 }
 
-const ArtifactFour = forwardRef<any, Props>(({ position, rotation = [0, 0, 0], scale, children }, ref) => {
+const ArtifactCapsule = forwardRef<any, Props>(({ position, scale = 1, rotation = [0, 0, 0], children }, ref) => {
   const localRef = useRef<THREE.Mesh>(null);
   const meshRef = (ref as React.RefObject<THREE.Mesh>) || localRef;
   const materialRef = useRef<ArtifactMaterialType>(null!)
@@ -70,24 +64,22 @@ const ArtifactFour = forwardRef<any, Props>(({ position, rotation = [0, 0, 0], s
     if (materialRef.current) {
       materialRef.current.uniforms.u_Time.value = clock.getElapsedTime()
     }
-    if (meshRef.current) {
-      meshRef.current.rotation.y += 0.02;
-      meshRef.current.rotation.x += 0.02;
-      meshRef.current.rotation.z += 0.02;
-    }
+    // if (meshRef.current) {
+    //   meshRef.current.rotation.x -= 0.06;
+    // }
   })
 
   return (
     <mesh ref={meshRef} position={position} rotation={rotation} scale={scale}>
-      {/* <torusKnotGeometry args={[0.2, 0.02, 236, 36, 5, 4]} /> */}
-      <sphereGeometry args={[0.03, 32, 32]} />
+      <capsuleGeometry args={[0.3, 5, 32, 32]} />
       <artifactMaterial
         ref={materialRef}
         attach="material"
+        side={THREE.DoubleSide}
       />
       {children}
     </mesh>
   );
 });
 
-export default ArtifactFour;
+export default ArtifactCapsule;

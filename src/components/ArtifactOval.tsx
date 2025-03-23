@@ -49,11 +49,12 @@ declare global {
 
 interface Props {
   position: [number, number, number];
+  scale: [number, number, number];
   rotation?: [number, number, number];
   children?: React.ReactNode;
 }
 
-const ArtifactLong = forwardRef<any, Props>(({ position, rotation = [0, 0, 0], children }, ref) => {
+const ArtifactOval = forwardRef<any, Props>(({ position, rotation = [0, 0, 0], scale, children }, ref) => {
   const localRef = useRef<THREE.Mesh>(null);
   const meshRef = (ref as React.RefObject<THREE.Mesh>) || localRef;
   const materialRef = useRef<ArtifactMaterialType>(null!)
@@ -64,16 +65,13 @@ const ArtifactLong = forwardRef<any, Props>(({ position, rotation = [0, 0, 0], c
       materialRef.current.uniforms.u_Time.value = clock.getElapsedTime()
     }
     if (meshRef.current) {
-      // meshRef.current.rotation.y += 0.02;
-      meshRef.current.rotation.x -= 0.04;
-      // meshRef.current.rotation.z += 0.02;
+      // meshRef.current.rotation.y -= 0.06;
     }
   })
 
   return (
-    <mesh ref={meshRef} position={position} rotation={[0, 0, 0]} scale={[0.7, 0.7, 0.12]}>
-      {/* <torusKnotGeometry args={[0.2, 0.02, 236, 36, 5, 4]} /> */}
-      <sphereGeometry args={[0.2, 32, 32]} />
+    <mesh ref={meshRef} position={position} rotation={rotation} scale={scale}>
+      <sphereGeometry args={[0.03, 32, 32]} />
       <artifactMaterial
         ref={materialRef}
         attach="material"
@@ -83,4 +81,4 @@ const ArtifactLong = forwardRef<any, Props>(({ position, rotation = [0, 0, 0], c
   );
 });
 
-export default ArtifactLong;
+export default ArtifactOval;

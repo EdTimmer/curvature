@@ -1,7 +1,7 @@
 import { forwardRef, useRef } from "react";
 import * as THREE from 'three';
 import { useFrame } from "@react-three/fiber";
-import ArtifactFour from "../ArtifactFour";
+import ArtifactSmallSphere from "../ArtifactSmallSphere";
 
 interface Props {
   position: [number, number, number];
@@ -22,10 +22,10 @@ const GateGroup = forwardRef<THREE.Group, Props>(({ position, rotation, scale, c
 
   return (
     <group ref={groupRef} position={position} rotation={rotation} scale={scale}>
-      <ArtifactFour position={[0, -0.3, 0]} rotation={[0, 0, 0]} scale={1.2} />
-      <ArtifactFour position={[0.26, 0.15, 0]} rotation={[0, 0, 2 * Math.PI / 3]} scale={1.2} />
+      <ArtifactSmallSphere position={[0, -0.3, 0]} rotation={[0, 0, 0]} scale={1.2} />
+      <ArtifactSmallSphere position={[0.26, 0.15, 0]} rotation={[0, 0, 2 * Math.PI / 3]} scale={1.2} />
       {/* <Sphere position={[-0.26, 0.15, 0]} rotation={[0, 0, -2 * Math.PI / 3]} size={0.08} color={'white'} /> */}
-      <ArtifactFour position={[-0.26, 0.15, 0]} rotation={[0, 0, -2 * Math.PI / 3]} scale={1.2} />
+      <ArtifactSmallSphere position={[-0.26, 0.15, 0]} rotation={[0, 0, -2 * Math.PI / 3]} scale={1.2} />
       {children}
     </group>
   )
