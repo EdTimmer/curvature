@@ -152,7 +152,9 @@ function App() {
           />
         </Canvas>
       </div>
-      <div className={styles.controls}>
+
+
+      <div>
         <IconButton 
           aria-label="volume"
           type="button"
@@ -214,6 +216,14 @@ function App() {
             <SwapHorizOutlined />
           )}
         </IconButton>
+      </div>
+
+      <div className="title">   
+        <p>CURVATURE</p>
+      </div>
+
+      <div className="link">   
+        <a href="https://www.edtimmer.com/" target="_blank" aria-label="Link to source code" title="Link to source code">edtimmer.com</a>
       </div>
       
 

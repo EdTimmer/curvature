@@ -1,8 +1,8 @@
 import { forwardRef, useRef } from "react";
 import * as THREE from 'three';
 import { useFrame } from "@react-three/fiber";
-import ArtifactFour from "../ArtifactFour";
 import ArtifactLong from "../ArtifactLong";
+import { getEquilateralTriangleVertices } from "../../utilities/VerticesCalculator";
 
 interface Props {
   position: [number, number, number];
@@ -21,13 +21,15 @@ const LongGateGroup = forwardRef<THREE.Group, Props>(({ position, rotation, scal
     }
   });
 
+  const trianglePositions = getEquilateralTriangleVertices(0.18);
+
   return (
     <group ref={groupRef} position={position} rotation={rotation} scale={scale}>
-      <ArtifactLong position={[0, -0.18, 0]} rotation={[0, 0, 0]} />
-      <group position={[0.1559, 0.09, 0]} rotation={[0, 0, 2 * Math.PI / 3]}>
+      <ArtifactLong position={trianglePositions[0]} rotation={[0, 0, 0]} />
+      <group position={trianglePositions[1]} rotation={[0, 0, 2 * Math.PI / 3]}>
         <ArtifactLong position={[0, 0, 0]} />
       </group>
-      <group position={[-0.1559, 0.09, 0]} rotation={[0, 0, -2 * Math.PI / 3]} >
+      <group position={trianglePositions[2]} rotation={[0, 0, -2 * Math.PI / 3]} >
         <ArtifactLong position={[0, 0, 0]} />
       </group>
       {children}

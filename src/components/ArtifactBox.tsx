@@ -71,7 +71,7 @@ const ArtifactBox = forwardRef<any, Props>(({ position, rotation = [0, 0, 0], ch
     }
     if (meshRef.current) {
       // meshRef.current.rotation.y += 0.02;
-      meshRef.current.rotation.x -= 0.05;
+      meshRef.current.rotation.x -= 0.06;
       // meshRef.current.rotation.z += 0.02;
     }
   })

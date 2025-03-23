@@ -47,9 +47,9 @@ void main() {
     for (float i = 0.0; i < 2.0; i++) {
         uv1 = fract(uv1 * 2.0) - 0.5;
         float d = sdHexagram(uv1, r) * exp(-length(uv0));
-        vec3 col = palette(length(uv0) + (i * 0.4) + u_Time * 0.05);
+        vec3 col = palette(length(uv0) + (i * 0.4) + u_Time * 0.08);
 
-        d = sin(d * 8.0 + (u_Time * 0.5)) / 8.0;
+        d = sin(d * 8.0 + (u_Time * 0.8)) / 8.0;
         d = abs(d);
         d = pow(0.01 / d, 1.0);
 

@@ -2,7 +2,7 @@ import { forwardRef, useRef } from "react";
 import * as THREE from 'three';
 import { useFrame } from "@react-three/fiber";
 import ArtifactFour from "../ArtifactFour";
-
+import { getHexagonVertices } from "../../utilities/VerticesCalculator";
 interface Props {
   position: [number, number, number];
   rotation: [number, number, number];
@@ -20,14 +20,16 @@ const SixGateGroup = forwardRef<THREE.Group, Props>(({ position, rotation, scale
     }
   });
 
+  const hexPositions = getHexagonVertices(0.27);
+
   return (
     <group ref={groupRef} position={position} rotation={rotation} scale={scale}>
-      <ArtifactFour position={[0, -0.3, 0]} rotation={[0, 0, 0]} scale={1.2} />
-      <ArtifactFour position={[0.26, -0.15, 0]} rotation={[0, 0, Math.PI/3]} scale={1.2} />
-      <ArtifactFour position={[0.26, 0.15, 0]} rotation={[0, 0, 2*Math.PI/3]} scale={1.2} />
-      <ArtifactFour position={[0, 0.3, 0]} rotation={[0, 0, Math.PI]} scale={1.2} />
-      <ArtifactFour position={[-0.26, 0.15, 0]} rotation={[0, 0, 4*Math.PI/3]} scale={1.2} />
-      <ArtifactFour position={[-0.26, -0.15, 0]} rotation={[0, 0, 5*Math.PI/3]} scale={1.2} />
+      <ArtifactFour position={hexPositions[0]} rotation={[0, 0, 0]} scale={1.4} />
+      <ArtifactFour position={hexPositions[1]} rotation={[0, 0, Math.PI/3]} scale={1.4} />
+      <ArtifactFour position={hexPositions[2]} rotation={[0, 0, 2*Math.PI/3]} scale={1.4} />
+      <ArtifactFour position={hexPositions[3]} rotation={[0, 0, Math.PI]} scale={1.4} />
+      <ArtifactFour position={hexPositions[4]} rotation={[0, 0, 4*Math.PI/3]} scale={1.4} />
+      <ArtifactFour position={hexPositions[5]} rotation={[0, 0, 5*Math.PI/3]} scale={1.4} />
       {children}
     </group>
   )
