@@ -60,7 +60,6 @@ const ArtifactSphere = forwardRef<any, Props>(({ position, scale = 1, rotation =
   const localRef = useRef<THREE.Mesh>(null);
   const meshRef = (ref as React.RefObject<THREE.Mesh>) || localRef;
   const materialRef = useRef<ArtifactMaterialType>(null!)
-  // const meshRef = useRef<THREE.Mesh>(null)
 
   useFrame(({ clock }, delta) => {
     if (materialRef.current) {
