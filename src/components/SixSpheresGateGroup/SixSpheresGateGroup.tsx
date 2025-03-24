@@ -34,7 +34,7 @@ const SixSpheresGateGroup = forwardRef<THREE.Group, Props>(({ position, rotation
       <ArtifactSmallSphere position={hexPositions[5]} rotation={[0, 0, 5*Math.PI/3]} scale={1.4} />
 
       {count >= 1 && (
-        <group position={[0, 0, 1.5]} >
+        <group position={[0, 0, 1]} >
           <ArtifactSmallSphere position={hexPositions[0]} rotation={[0, 0, 0]} scale={1.4} />
           <ArtifactSmallSphere position={hexPositions[1]} rotation={[0, 0, Math.PI/3]} scale={1.4} />
           <ArtifactSmallSphere position={hexPositions[2]} rotation={[0, 0, 2*Math.PI/3]} scale={1.4} />
@@ -46,7 +46,7 @@ const SixSpheresGateGroup = forwardRef<THREE.Group, Props>(({ position, rotation
       }
 
       {count >= 2 && (
-        <group position={[0, 0, - 1.5]} >
+        <group position={[0, 0, -1]} >
           <ArtifactSmallSphere position={hexPositions[0]} rotation={[0, 0, 0]} scale={1.4} />
           <ArtifactSmallSphere position={hexPositions[1]} rotation={[0, 0, Math.PI/3]} scale={1.4} />
           <ArtifactSmallSphere position={hexPositions[2]} rotation={[0, 0, 2*Math.PI/3]} scale={1.4} />
