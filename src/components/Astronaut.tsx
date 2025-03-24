@@ -9,7 +9,7 @@ interface AstronautProps {
   [key: string]: any;
 }
 
-const Astronaut = forwardRef<any, AstronautProps>(({ children, rotationSpeed = 0.02, ...props }, ref) => {
+const Astronaut = forwardRef<any, AstronautProps>(({ children, rotationSpeed = 1.5, ...props }, ref) => {
   const { nodes, materials } = useGLTF('../../models/Astronaut-transformed.glb')
   // Create local ref if no ref is provided
   const localRef = useRef<THREE.Mesh>(null);
@@ -21,11 +21,11 @@ const Astronaut = forwardRef<any, AstronautProps>(({ children, rotationSpeed = 0
     })
   }, [])
 
-  useFrame(() => {
+  useFrame((_, delta) => {
     if (meshRef.current) {
-      meshRef.current.rotation.y += rotationSpeed;
-      meshRef.current.rotation.x += rotationSpeed;
-      meshRef.current.rotation.z += rotationSpeed;
+      meshRef.current.rotation.y += rotationSpeed * delta;
+      meshRef.current.rotation.x += rotationSpeed * delta;
+      meshRef.current.rotation.z += rotationSpeed * delta;
     }
   });
   

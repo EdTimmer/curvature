@@ -8,16 +8,17 @@ interface Props {
   rotation: [number, number, number];
   scale: number;
   count: number;
+  rotationSpeed?: number;
   children?: React.ReactNode;
 }
 
-const SixSpheresGateGroup = forwardRef<THREE.Group, Props>(({ position, rotation, scale, count, children }, ref) => {
+const SixSpheresGateGroup = forwardRef<THREE.Group, Props>(({ position, rotation, scale, count, rotationSpeed = 1, children }, ref) => {
   const localRef = useRef<THREE.Group>(null);
   const groupRef = (ref as React.RefObject<THREE.Group>) || localRef;
 
-  useFrame(() => {
+  useFrame((_, delta) => {
     if (groupRef.current) {
-      groupRef.current.rotation.z -= 0.015;
+      groupRef.current.rotation.z -= rotationSpeed * delta;
     }
   });
 

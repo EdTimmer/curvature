@@ -52,24 +52,25 @@ interface Props {
   isMovingForward: boolean;
   scale?: number;
   rotation?: [number, number, number];
+  rotationSpeed?: number;
   children?: React.ReactNode;
 }
 
-const ArtifactSphere = forwardRef<any, Props>(({ position, scale = 1, rotation = [0, 0, 0], isMovingForward, children }, ref) => {
+const ArtifactSphere = forwardRef<any, Props>(({ position, scale = 1, rotation = [0, 0, 0], rotationSpeed = 3, isMovingForward, children }, ref) => {
   const localRef = useRef<THREE.Mesh>(null);
   const meshRef = (ref as React.RefObject<THREE.Mesh>) || localRef;
   const materialRef = useRef<ArtifactMaterialType>(null!)
   // const meshRef = useRef<THREE.Mesh>(null)
 
-  useFrame(({ clock }) => {
+  useFrame(({ clock }, delta) => {
     if (materialRef.current) {
       materialRef.current.uniforms.u_Time.value = clock.getElapsedTime()
     }
     if (meshRef.current) {
       if (isMovingForward) {
-        meshRef.current.rotation.x -= 0.06;
+        meshRef.current.rotation.x -= rotationSpeed * delta;
       } else {
-        meshRef.current.rotation.x += 0.06;
+        meshRef.current.rotation.x += rotationSpeed * delta;
       }
     }
   })
