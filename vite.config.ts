@@ -9,7 +9,7 @@ export default defineConfig({
       scss: {
         // You can define a path to a file with global variables or mixins here
         additionalData: `
-          @import "./src/styles/variables.scss";
+         @use "./src/styles/variables.scss" as *;
         `
       }
     }

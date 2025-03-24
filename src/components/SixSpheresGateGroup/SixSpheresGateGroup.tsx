@@ -22,8 +22,6 @@ const SixSpheresGateGroup = forwardRef<THREE.Group, Props>(({ position, rotation
   });
 
   const hexPositions = getHexagonVertices(0.27);
-  console.log('count :>> ', count);
-  console.log('position :>> ', position);
 
   return (
     <group ref={groupRef} position={position} rotation={rotation} scale={scale}>

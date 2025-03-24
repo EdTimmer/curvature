@@ -132,7 +132,6 @@ const TorusGroup = ({ audioInitialized, audioEnabled, isMovingForward }: Props) 
         
         // Manage playback based on distance
         if (distance > distanceForSound && audio.isPlaying) {
-          console.log('distance :>> ', distance);
           audio.stop();
         } else if (distance <= distanceForSound && !audio.isPlaying && audioEnabled) {
           audio.play();
@@ -148,8 +147,6 @@ const TorusGroup = ({ audioInitialized, audioEnabled, isMovingForward }: Props) 
     }
   };
   
-  console.log('audioEnabled :>> ', audioEnabled);
-  console.log('count :>> ', count);
   return (
     <group ref={groupRef} position={[0, 0, 0]}>
       <group ref={torusGroupRef} position={[28, 0, 0]}>
