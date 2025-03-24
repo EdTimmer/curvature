@@ -125,9 +125,13 @@ function App() {
           position={[0, 0, 1]}
         />
         <ambientLight intensity={0.5} />
-        <directionalLight position={[10, 0, 10]} />
-        <directionalLight position={[0, 10, 0]} />
+        {/* <directionalLight position={[10, 0, 10]} /> */}
+        <directionalLight position={[0, 10, 1]} />
+        <directionalLight position={[0, -10, 1]} />
         <directionalLight position={[0, 0, 1]} />
+        {/* <directionalLight position={[5, 0, 5]} /> */}
+        {/* <directionalLight position={[-5, 0, 5]} /> */}
+        {/* <directionalLight position={[0, 0, 5]} /> */}
 
         <TorusGroup audioInitialized={audioInitialized} audioEnabled={audioEnabled} isMovingForward={isMovingForward} />
 
