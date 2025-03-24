@@ -15,7 +15,7 @@ const OctahedronsGateGroup = forwardRef<THREE.Group, Props>(({ position, rotatio
   const localRef = useRef<THREE.Group>(null);
   const groupRef = (ref as React.RefObject<THREE.Group>) || localRef;
 
-  const squarePositions = getSquareVertices(0.17);
+  const squarePositions = getSquareVertices(0.18);
 
   return (
     <group ref={groupRef} position={position} rotation={rotation} scale={scale}>

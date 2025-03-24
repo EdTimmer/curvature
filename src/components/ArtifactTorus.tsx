@@ -57,10 +57,11 @@ interface Props {
   position: [number, number, number];
   rotation?: [number, number, number];
   scale?: [number, number, number];
+  radius?: number;
   children?: React.ReactNode;
 }
 
-const ArtifactLong = forwardRef<any, Props>(({ position, rotation = [0, 0, 0], scale = [1, 1, 1], children }, ref) => {
+const ArtifactLong = forwardRef<any, Props>(({ position, rotation = [0, 0, 0], scale = [1, 1, 1], radius = 0.5, children }, ref) => {
   const localRef = useRef<THREE.Mesh>(null);
   const meshRef = (ref as React.RefObject<THREE.Mesh>) || localRef;
   const materialRef = useRef<ArtifactMaterialType>(null!)
@@ -70,16 +71,11 @@ const ArtifactLong = forwardRef<any, Props>(({ position, rotation = [0, 0, 0], s
     if (materialRef.current) {
       materialRef.current.uniforms.u_Time.value = clock.getElapsedTime()
     }
-    if (meshRef.current) {
-      // meshRef.current.rotation.y += 0.02;
-      // meshRef.current.rotation.x -= 0.02;
-      // meshRef.current.rotation.z += 0.02;
-    }
   })
 
   return (
     <mesh ref={meshRef} position={position} rotation={rotation} scale={scale}>
-      <torusGeometry args={[0.5, 0.02, 32, 132]} />
+      <torusGeometry args={[radius, 0.02, 32, 132]} />
       <artifactMaterial
         ref={materialRef}
         attach="material"

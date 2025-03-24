@@ -4,8 +4,8 @@ import * as THREE from 'three';
 import { TextureLoader } from 'three';
 import Astronaut from '../Astronaut';
 import OctahedronsGateGroup from '../OctahedronsGateGroup/OctahedronsGateGroup';
-import ThreeRingsGroup from '../ThreeRingsGroup/ThreeRingsGroup';
-import SixGateGroup from '../SixGateGroup/SixGateGroup';
+import RingsGroup from '../RingsGroup/RingsGroup';
+import SixSpheresGateGroup from '../SixSpheresGateGroup/SixSpheresGateGroup';
 import ThreeSpheresGateGroup from '../ThreeSpheresGateGroup/ThreeSpheresGateGroup';
 import AudioElement from '../AudioElement';
 
@@ -168,7 +168,7 @@ const TorusGroup = ({ audioInitialized, audioEnabled, isMovingForward }: Props) 
         </mesh>
 
         {/* West */}
-        <SixGateGroup ref={gateGroupTwoRef} position={[-28, 0, 0]} rotation={[0, 0, 0]} scale={1.2} count={count}>
+        <SixSpheresGateGroup ref={gateGroupTwoRef} position={[-28, 0, 0]} rotation={[0, 0, 0]} scale={1.2} count={count}>
           <AudioElement 
             audioEnabled={audioEnabled && audioReady}
             audioInitialized={audioInitialized}
@@ -176,7 +176,7 @@ const TorusGroup = ({ audioInitialized, audioEnabled, isMovingForward }: Props) 
             url="../audio/ambient-1.mp3" 
             setAudioRef={setAudioRef}
           />
-        </SixGateGroup>
+        </SixSpheresGateGroup>
 
         {/* North */}
         <ThreeSpheresGateGroup ref={gateGroupFourRef} position={[0, 0, -28]} rotation={[0, -Math.PI / 2, 0]} isMovingForward={isMovingForward} scale={1.2}>
@@ -241,7 +241,7 @@ const TorusGroup = ({ audioInitialized, audioEnabled, isMovingForward }: Props) 
         </OctahedronsGateGroup>}
 
         {/* South */}
-        <ThreeRingsGroup ref={gateGroupThreeRef} position={[0, 0, 28]} rotation={[0, Math.PI / 2, 0]} scale={1.2} count={count}>
+        <RingsGroup ref={gateGroupThreeRef} position={[0, 0, 28]} rotation={[0, Math.PI / 2, 0]} scale={1.2} count={count}>
           <AudioElement 
             audioEnabled={audioEnabled && audioReady}
             audioInitialized={audioInitialized}
@@ -249,7 +249,7 @@ const TorusGroup = ({ audioInitialized, audioEnabled, isMovingForward }: Props) 
             url="../audio/ambient-1.mp3" 
             setAudioRef={setAudioRef}
           />
-        </ThreeRingsGroup>
+        </RingsGroup>
 
         <Astronaut ref={astronautOneRef} scale={0.035} position={[-19.9, 0, -19.9]} rotation={[0, 0, Math.PI / 2]}>
           <object3D />

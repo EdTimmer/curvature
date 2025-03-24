@@ -11,7 +11,7 @@ interface Props {
   children?: React.ReactNode;
 }
 
-const SixGateGroup = forwardRef<THREE.Group, Props>(({ position, rotation, scale, count, children }, ref) => {
+const SixSpheresGateGroup = forwardRef<THREE.Group, Props>(({ position, rotation, scale, count, children }, ref) => {
   const localRef = useRef<THREE.Group>(null);
   const groupRef = (ref as React.RefObject<THREE.Group>) || localRef;
 
@@ -62,4 +62,4 @@ const SixGateGroup = forwardRef<THREE.Group, Props>(({ position, rotation, scale
   )
 });
 
-export default SixGateGroup;
+export default SixSpheresGateGroup;

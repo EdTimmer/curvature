@@ -72,7 +72,7 @@ const ArtifactOctahedron = forwardRef<any, Props>(({ position, isMovingForward, 
   })
 
   return (
-    <mesh ref={meshRef} position={position} rotation={[0, 0, 0]} scale={[1, 1.3, 1]}>
+    <mesh ref={meshRef} position={position} rotation={[0, 0, 0]} scale={[1, 1.4, 1]}>
       <octahedronGeometry args={[0.1, 0]} />
       <artifactMaterial
         ref={materialRef}
