@@ -1,7 +1,7 @@
 import { forwardRef, useRef } from "react";
 import * as THREE from 'three';
 import ArtifactSphere from "../ArtifactSphere";
-import { getEquilateralTriangleVertices } from "../../utilities/verticesCalculator.ts";
+import { getEquilateralTriangleVertices } from "../../utilities/calculator.ts";
 
 interface Props {
   position: [number, number, number];

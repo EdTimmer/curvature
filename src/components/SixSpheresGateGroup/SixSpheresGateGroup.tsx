@@ -2,7 +2,7 @@ import { forwardRef, useRef } from "react";
 import * as THREE from 'three';
 import { useFrame } from "@react-three/fiber";
 import ArtifactSmallSphere from "../ArtifactSmallSphere";
-import { getHexagonVertices } from "../../utilities/verticesCalculator.ts";
+import { getHexagonVertices } from "../../utilities/calculator.ts";
 interface Props {
   position: [number, number, number];
   rotation: [number, number, number];

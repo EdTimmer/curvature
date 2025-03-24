@@ -1,7 +1,7 @@
 import { forwardRef, useRef } from "react";
 import * as THREE from 'three';
 import ArtifactOctahedron from "../ArtifactOctahedron";
-import { getSquareVertices } from "../../utilities/verticesCalculator.ts";
+import { getSquareVertices } from "../../utilities/calculator.ts";
 
 interface Props {
   position: [number, number, number];
